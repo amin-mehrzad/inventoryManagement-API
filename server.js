@@ -13,7 +13,7 @@ const refreshSecretKey = process.env.REFRESH_SECRET_KEY;
 
 
 const http = require("http");
-const socketIo = require("socket.io");
+///  const socketIo = require("socket.io");
 
 
 
@@ -23,31 +23,18 @@ const passport = require("passport");
 
 
 const server = http.createServer(app);
+
+
+
+/*   // Set Socket
+
 const io = socketIo(server);
 
 
-
-
-// let interval;
-
 io.on("connection", (socket) => {
   console.log("New client connected");
-  // if (interval) {
-  //   clearInterval(interval);
-  // }
-  // interval = setInterval(() => getApiAndEmit(socket), 1000);
-  // socket.on("disconnect", () => {
-  //   console.log("Client disconnected");
-  //   clearInterval(interval);
-  // });
-});
 
-
-// const getApiAndEmit = socket => {
-//   const response = new Date();
-//   // Emitting a new message. Will be consumed by the client
-//   socket.emit("FromAPI", response);
-// };
+}); 
 
 
 // Make io accessible to our router
@@ -56,26 +43,20 @@ app.use(function(req,res,next){
   next();
 });
 
+*/
+
+
 
 // Set CORS policy
 app.use('/API', cors())
 app.use(function(req, res, next) {
-    console.log('sldflskhlksj')
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
 //set "uploads" folder for serving static files
-//app.use(express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static('uploads'));
-
-
-//var jwt = require('jsonwebtoken');
-//var jwtAuthentication = require('express-jwt');
-// jwtAuthentication.unless = require('express-unless');
-//passport.unless = require('express-unless');
-
 
 
 app.set('secretKey', secretKey); // jwt secret token
@@ -133,7 +114,7 @@ app.use('/API', passport.authenticate('jwt', { session: false }))
 app.use('/API/users', users);
 app.use('/API/scopes', scopes);
 app.use('/API/customers', customers);
-app.use('/API/products', products);
+//app.use('/API/products', products);
 app.use('/API/categories', categories);
 app.use('/API/orders', orders);
 app.use('/API/websites', websites);
