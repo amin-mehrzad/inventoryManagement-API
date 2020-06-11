@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 module.exports = {
     getById: function (req, res, next) {
-      //  console.log(req.io.sockets.emit('FromAPI'));
+        //  console.log(req.io.sockets.emit('FromAPI'));
         OrderModel.findById(req.params.orderId, function (err, OrderInfo) {
             if (err)
                 next(err);
@@ -24,8 +24,8 @@ module.exports = {
                     $project: {
                         orderID: 1,
                         orderNumber: 1,
-                        orderItems:1,
-                        orderStatusHistory:1,
+                        orderItems: 1,
+                        orderStatusHistory: 1,
                         orderState: 1,
                         orderSubTotal: 1,
                         orderTax: 1,
@@ -43,7 +43,7 @@ module.exports = {
                         customerEmail: 1,
                         orderInstructions: 1,
                         orderPaymentInstructions: 1,
-                        orderCreatedTime:1,
+                        orderCreatedTime: 1,
                         websiteID: 1
 
                     }
@@ -84,7 +84,7 @@ module.exports = {
         });
     },
     // create: function (req, res, next) {
-        
+
     //     var oModel=req.body
     //     var orderCreatedTime = new Date()
     //     oModel={...oModel,websiteID: req.user.websiteID, orderCreatedTime: orderCreatedTime}
@@ -93,7 +93,7 @@ module.exports = {
     //         if (err)
     //             next(err);
     //         else{
-                
+
     //             req.io.sockets.emit('NewOrder',result)
     //             res.json({result}).status(200);
     //         }
@@ -103,11 +103,12 @@ module.exports = {
         console.log(req.user.websiteID)
         var newEmailUID = `${Date.now()}-${Math.floor(Math.random() * Math.pow(10, 8))}`;
         var orderData = req.body;
-        orderData = {...orderData ,
-            websiteID : req.user.websiteID,
-           // billingAddress : req.body.billingAddress,
-           // shippingAddress : req.body.shippingAddress,
-            updateTimeStamp : Date.now()
+        orderData = {
+            ...orderData,
+            websiteID: req.user.websiteID,
+            // billingAddress : req.body.billingAddress,
+            // shippingAddress : req.body.shippingAddress,
+            updateTimeStamp: Date.now()
         };
         console.log(orderData)
 
@@ -122,45 +123,37 @@ module.exports = {
             function (err, orderObject) {
                 if (err) {
                     console.log(err);
-                // } else if (orderObject) {
-                //     var orderCreatedAt = new Date(orderObject.created_at);
-                //     var orderUpdatedAt = new Date(orderObject.updated_at);
+                } else if (orderObject) {
 
-                //     // orderCreatedAt = moment(orderCreatedAt).tz('America/Los_Angeles').format();
-                //     var orderSkus = Object.keys(req.body.itemsData);
-                //     var reviewItemData = req.body.itemsData[orderSkus[0]];
-                //     var eModel = {};
-                //     eModel = {
-                //         websiteID: req.user.websiteID,
-                //         productID: reviewItemData.productID,
-                //         productSKU: reviewItemData.productSKU,
-                //         productName: reviewItemData.productName,
-                //         productImage: reviewItemData.productImageURL,
-                //         productURL: reviewItemData.productURL,
+                    var orderSkus = Object.keys(req.body.itemsData);
+                    var reviewItemData = req.body.itemsData[orderSkus[0]];
 
-                //         email: orderObject.billingAddress.email,
-                //         firstName: orderObject.billingAddress.firstname,
-                //         lastName: orderObject.billingAddress.lastname,
-                //         customerID: orderObject.customer_id,
+                    pModel = {
+                        websiteID: req.user.websiteID,
+                        productID: reviewItemData.productID,
+                        productSKU: reviewItemData.productSKU,
+                        productName: reviewItemData.productName,
+                        productImage: reviewItemData.productImageURL,
+                        productURL: reviewItemData.productURL,
+                        productMSRP: reviewItemData.productMSRP,
+                        productMSWP: reviewItemData.productMSWP,
+                        productPrice: reviewItemData.productPrice,
+                        productQty: reviewItemData.productQty,
+                        productSalableQty: reviewItemData.productSalableQty,
+                        productInStock: reviewItemData.productInStock,
+                        productCategory: reviewItemData.productCategory,
+                        productStatus: reviewItemData.productStatus,
+                        email: orderObject.billingAddress.email,
+                        firstName: orderObject.billingAddress.firstName,
+                        lastName: orderObject.billingAddress.lastname,
+                        customerID: orderObject.customer_id,
 
-                //         //emailUID: SHA256(`${orderObject._id}-${reviewItemData.productSKU}`).toString(),
-                //         emailUID: SHA256(`${req.user.websiteID}-${orderObject.billingAddress.email}-${reviewItemData.productSKU}`).toString(),
-                //         status: 'queued',
-                //         emailType: 'product',
-                //         emailSource: 'order',
-                //         createTimeStamp: orderObject.createTimeStamp,
-                //         updateTimeStamp: orderObject.updateTimeStamp,
-                //         orderNumber: orderObject.increment_id,
-
-                //         orderCreatedAt: orderCreatedAt,
-                //         orderUpdatedAt: orderUpdatedAt
-
-                //     };
+                        updateTimeStamp: orderObject.updateTimeStamp,
 
 
+                    };
 
-                //
-             } 
+                }
                 else {
                     console.log('check here ----1')
                 }

@@ -2,46 +2,58 @@ const mongoose = require('mongoose');
 //Define a schema
 const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
-    imageUrl: {
+    productImage: {
         type: String,
         trim: true,
     },
-    name: {
-        type: String,
-
+    productURL: {
+        type:String
     },
-    price: {
+    productName: {
+        type: String,
+    },
+    productPrice: {
         type: Number,
-
     },
-    qty: {
+    productQty: {
         type: Number,
         trim: true,
     },
-    tax: {
+    productInStock: {
+        type: String,
+    },
+
+    productSalableQty: {
+        type: Number,
+        trim: true,
+    },
+    productCategory: {
         type: String,
         trim: true,
     },
-    featured: {
+    productID: {
+        type: Number,
+        trim: true,
+    },
+    productSKU: {
         type: String,
         trim: true,
     },
-    category: {
+    productStatus: {
         type: String,
-        trim: true,
     },
-    barcode: {
-        type: String,
-        trim: true,
+    productMSRP:{
+        type: Number,
     },
-    active: {
-        type: String,
-        trim: true,
+    productMSWP:{
+        type: Number,
     },
     websiteID: {
         type: Schema.Types.ObjectId,
         ref: 'Website'
     },
-
+    updateTimeStamp:{
+        type:Date
+    }
 },{strict:false});
 module.exports = mongoose.model('Product', ProductSchema)
