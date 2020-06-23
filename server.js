@@ -84,6 +84,8 @@ const categories = require('./routes/categoriesRoute');
 const orders = require('./routes/ordersRoute');
 const websites = require('./routes/websitesRoute');
 
+const orderNotification = require('./routes/orderNotificationRoute');
+
 
 app.get('/', function (req, res) {
   res.json({ "tutorial": "Build REST API with node.js" });
@@ -95,6 +97,8 @@ app.use('/users', users, (req, res) => {
   if (req.method != "POST")
     res.status(401).json({ "message": "Unuathorized User!!" })
 });
+
+app.use('/orderNotification', orderNotification );
 
 
 // athenticate root API route 
