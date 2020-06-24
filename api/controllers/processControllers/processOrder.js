@@ -8,11 +8,11 @@ module.exports = {
         // TODO: return success status
     },
     updateProducts: (orderInfo) => {
-        console.log(orderInfo)
+        console.log('updating products of order Number:',orderInfo.orderNumber)
 
         items = orderInfo.items
       //  console.log(items)
-        items.map((item) => {
+        items.map( (item) => {
             productsModel.findOneAndUpdate({ productSKU: item.sku },{},{upsert:true,new:true}, (err, product) => {
                 if (err)
                     next(err)
@@ -31,6 +31,7 @@ module.exports = {
                 }
 
             })
+            console.log('sku:',item.sku)
         })
     },
 }

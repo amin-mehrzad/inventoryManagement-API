@@ -176,27 +176,34 @@ module.exports = {
 
                 //   console.log(orders[0])
 
-                // FIXME: fix syntax error of loop
+                // FIXME: request stucks inside loop :( 
                 //  Promise.all(
 
-                for (let i = 0; i == response.data.total - 1; i++) {
+                // for (let i = 0; i == response.data.total - 1; i++) {
+                orders.map((order) => {
                     console.log('orders[i]')
-                    OrderModel.create(orders[i], (err, newOrder) => {
+                    // OrderModel.create(orders[i], (err, newOrder) => {
+                    OrderModel.create(order, (err, newOrder) => {
                         if (err)
                             next(err)
                         else {
+                            console.log('---------------->',)
                             //    var orderProcessed= processOrder.updateProducts(orders[i])
-                            processOrder.updateProducts(orders[i])
+                            // processOrder.updateProducts(orders[i])
+                            processOrder.updateProducts(order)
                             //  if(orderProcessed)
                             //      continue
-                            console.log('new order created-------->', newOrder)
+                            console.log('new order created-------->', newOrder.orderNumber)
+
                         }
                     })
+                   // console.log('sdfsdfsdfsdfsdfsdfsdfsdfsdfsdf')
+                })
 
-                }
-                //  )
+                res.status(200).json({message:'success'})
+
+                // )
                 //  .then(() => res.status(200))
-                res.status(200)
             })
             .catch((error) => {
                 console.log(error)
