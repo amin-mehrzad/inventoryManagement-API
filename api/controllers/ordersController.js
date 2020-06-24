@@ -107,61 +107,7 @@ module.exports = {
     //         }
     //     });
     // },
-    create: function (req, res, next) {
-        // console.log(req.user.websiteID)
-        // var newEmailUID = `${Date.now()}-${Math.floor(Math.random() * Math.pow(10, 8))}`;
-        // var orderData = req.body;
-        // orderData = {
-        //     ...orderData,
-        //     websiteID: req.user.websiteID,
-        //     // billingAddress : req.body.billingAddress,
-        //     // shippingAddress : req.body.shippingAddress,
-        //     updateTimeStamp: Date.now()
-        // };
-        // console.log(orderData)
-
-
-        // OrderModel.findOneAndUpdate({ websiteID: req.user.websiteID, entity_id: orderData.entity_id }, orderData, { upsert: true, new: true },
-        //     function (err, orderObject) {
-        //         if (err) {
-        //             console.log(err);
-        //         } else if (orderObject) {
-
-        //             var orderSkus = Object.keys(req.body.itemsData);
-        //             var reviewItemData = req.body.itemsData[orderSkus[0]];
-
-        //             pModel = {
-        //                 websiteID: req.user.websiteID,
-        //                 productID: reviewItemData.productID,
-        //                 productSKU: reviewItemData.productSKU,
-        //                 productName: reviewItemData.productName,
-        //                 productImage: reviewItemData.productImageURL,
-        //                 productURL: reviewItemData.productURL,
-        //                 productMSRP: reviewItemData.productMSRP,
-        //                 productMSWP: reviewItemData.productMSWP,
-        //                 productPrice: reviewItemData.productPrice,
-        //                 productQty: reviewItemData.productQty,
-        //                 productSalableQty: reviewItemData.productSalableQty,
-        //                 productInStock: reviewItemData.productInStock,
-        //                 productCategory: reviewItemData.productCategory,
-        //                 productStatus: reviewItemData.productStatus,
-        //                 email: orderObject.billingAddress.email,
-        //                 firstName: orderObject.billingAddress.firstName,
-        //                 lastName: orderObject.billingAddress.lastname,
-        //                 customerID: orderObject.customer_id,
-
-        //                 updateTimeStamp: orderObject.updateTimeStamp,
-
-
-        //             };
-
-        //     }
-        //     else {
-        //         console.log('check here ----1')
-        //     }
-        //     console.log("finished - sending response");
-        //     res.status(200).json({ status: "success", message: "Order and Email added successfully!!!", data: orderObject });
-        // })
+    create: function (req, res, next) {       
         console.log(req.body)
         pullRequestURL = req.body.resource_url
         axios.get(pullRequestURL, {
@@ -173,37 +119,19 @@ module.exports = {
             .then((response) => {
                 console.log('response from ship station, total orders :', response.data.total)
                 var orders = response.data.orders
-
-                //   console.log(orders[0])
-
-                // FIXME: request stucks inside loop :( 
-                //  Promise.all(
-
-                // for (let i = 0; i == response.data.total - 1; i++) {
                 orders.map((order) => {
                     console.log('orders[i]')
-                    // OrderModel.create(orders[i], (err, newOrder) => {
                     OrderModel.create(order, (err, newOrder) => {
                         if (err)
                             next(err)
                         else {
                             console.log('---------------->',)
-                            //    var orderProcessed= processOrder.updateProducts(orders[i])
-                            // processOrder.updateProducts(orders[i])
                             processOrder.updateProducts(order)
-                            //  if(orderProcessed)
-                            //      continue
                             console.log('new order created-------->', newOrder.orderNumber)
-
                         }
                     })
-                   // console.log('sdfsdfsdfsdfsdfsdfsdfsdfsdfsdf')
                 })
-
                 res.status(200).json({message:'success'})
-
-                // )
-                //  .then(() => res.status(200))
             })
             .catch((error) => {
                 console.log(error)

@@ -85,6 +85,7 @@ const orders = require('./routes/ordersRoute');
 const websites = require('./routes/websitesRoute');
 
 const orderNotification = require('./routes/orderNotificationRoute');
+const shipNotification = require('./routes/shipNotificationRoute');
 
 
 app.get('/', function (req, res) {
@@ -99,6 +100,7 @@ app.use('/users', users, (req, res) => {
 });
 
 app.use('/orderNotification', orderNotification );
+app.use('/shipNotification', shipNotification );
 
 
 // athenticate root API route 

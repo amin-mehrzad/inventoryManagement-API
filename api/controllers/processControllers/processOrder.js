@@ -16,16 +16,16 @@ module.exports = {
             productsModel.findOneAndUpdate({ productSKU: item.sku },{},{upsert:true,new:true}, (err, product) => {
                 if (err)
                     next(err)
-                else if (product.productQty) {
+                else if (product.productAvailableQty) {
                     console.log('update quantity' ,product)
-                    product.productQty = product.productQty - item.quantity
+                    product.productAvailableQty = product.productAvailableQty - item.quantity
                     product.save()
                 //    .then(()=>{return true})
 
                 } else {
                    // const newProduct = new productsModel
                    console.log('insert quantity' ,product)
-                    product.productQty = 0 - item.quantity
+                    product.productAvailableQty = 0 - item.quantity
                     product.save()
                   //  .then(()=>{return true})
                 }

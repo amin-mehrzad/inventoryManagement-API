@@ -18,10 +18,12 @@ const ProductSchema = new Schema({
     // productPrice: {
     //     type: Number,
     // },
-    // productQty: {
-    //     type: Number,
-    //     trim: true,
-    // },
+    productQty: {
+        type: Number,
+    },
+    productAvailableQty: {
+        type: Number,
+    },
     // productInStock: {
     //     type: String,
     // },
