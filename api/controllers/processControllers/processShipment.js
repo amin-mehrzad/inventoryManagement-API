@@ -7,12 +7,12 @@ module.exports = {
         customerModel.findAndUpdate({ customerEmail: shipmentInfo.customer_email }, shipmentInfo.billingAddress, { upsert: true }, () => { })
         // TODO: change customer information from shipping  info
     },
-    updateProducts: (shipmentInfo) => {
+    updateProducts: async (shipmentInfo) => {
         console.log('updating products of order Number:',shipmentInfo.orderNumber)
 
         items = shipmentInfo.shipmentItems
       //  console.log(items)
-        items.map( (item) => {
+       await items.map( (item) => {
             productsModel.findOneAndUpdate({ productSKU: item.sku },{},{upsert:true,new:true}, (err, product) => {
                 if (err)
                     next(err)

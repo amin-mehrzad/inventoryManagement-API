@@ -7,12 +7,14 @@ module.exports = {
         customerModel.findAndUpdate({ customerEmail: orderInfo.customer_email }, orderInfo.billingAddress, { upsert: true }, () => { })
         // TODO: return success status
     },
-    updateProducts: (orderInfo) => {
+    updateProducts: async (orderInfo) => {
+      //console.log('updating products of order Number:',orderInfo)
+
         console.log('updating products of order Number:',orderInfo.orderNumber)
 
         items = orderInfo.items
       //  console.log(items)
-        items.map( (item) => {
+      await items.map( (item) => {
             productsModel.findOneAndUpdate({ productSKU: item.sku },{},{upsert:true,new:true}, (err, product) => {
                 if (err)
                     next(err)
@@ -20,7 +22,7 @@ module.exports = {
                     console.log('update quantity' ,product)
                     product.productAvailableQty = product.productAvailableQty - item.quantity
                     product.save()
-                //    .then(()=>{return true})
+                   // .then(()=>{return true})
 
                 } else {
                    // const newProduct = new productsModel
@@ -33,5 +35,6 @@ module.exports = {
             })
             console.log('sku:',item.sku)
         })
+      //  return 'DONE'
     },
 }
