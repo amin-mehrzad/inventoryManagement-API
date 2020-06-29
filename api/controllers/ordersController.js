@@ -53,7 +53,6 @@ module.exports = {
                         orderPaymentInstructions: 1,
                         orderCreatedTime: 1,
                         websiteID: 1
-
                     }
                 },
                 {
@@ -61,7 +60,6 @@ module.exports = {
                         orderCreatedTime: -1,
                     }
                 },
-
             ], function (err, categories) {
                 if (err)
                     next(err);
@@ -71,7 +69,6 @@ module.exports = {
         )
     },
     updateById: function (req, res, next) {
-
         oModel = req.body
         OrderModel.findOneAndUpdate({
             _id: req.params.orderId,
@@ -91,22 +88,6 @@ module.exports = {
                 res.json({ status: "success", message: "Order deleted successfully!!!", data: null });
         });
     },
-    // create: function (req, res, next) {
-
-    //     var oModel=req.body
-    //     var orderCreatedTime = new Date()
-    //     oModel={...oModel,websiteID: req.user.websiteID, orderCreatedTime: orderCreatedTime}
-    //     console.log(oModel)
-    //     OrderModel.create(oModel, function (err, result) {
-    //         if (err)
-    //             next(err);
-    //         else{
-
-    //             req.io.sockets.emit('NewOrder',result)
-    //             res.json({result}).status(200);
-    //         }
-    //     });
-    // },
     create: function (req, res, next) {       
         console.log(req.body)
         pullRequestURL = req.body.resource_url
@@ -120,12 +101,11 @@ module.exports = {
                 console.log('response from ship station, total orders :', response.data.total)
                 var orders = response.data.orders
                 orders.map((order) => {
-                    console.log('orders[i]')
-                    OrderModel.create(order, (err, newOrder) => {
+                    OrderModel.create({...order, isActivated: true}, (err, newOrder) => {
                         if (err)
                             next(err)
                         else {
-                            console.log('---------------->',)
+                            console.log('---------------->')
                             processOrder.updateProducts(order)
                             console.log('new order created-------->', newOrder.orderNumber)
                         }

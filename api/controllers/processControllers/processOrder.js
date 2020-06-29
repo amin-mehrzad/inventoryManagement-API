@@ -19,14 +19,16 @@ module.exports = {
                 if (err)
                     next(err)
                 else if (product.productAvailableQty) {
-                    console.log('update quantity' ,product)
+                   // console.log('update quantity' ,product)
+                    console.log('product quantity updated for sku ',product.productSKU)
                     product.productAvailableQty = product.productAvailableQty - item.quantity
                     product.save()
                    // .then(()=>{return true})
 
                 } else {
                    // const newProduct = new productsModel
-                   console.log('insert quantity' ,product)
+                  // console.log('insert quantity' ,product)
+                   console.log('product quantity inserted for sku ',product.productSKU)
                     product.productAvailableQty = 0 - item.quantity
                     product.save()
                   //  .then(()=>{return true})
