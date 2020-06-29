@@ -107,7 +107,8 @@ module.exports = {
                         else {
                             console.log('---------------->')
                             processOrder.updateProducts(order)
-                            console.log('new order created-------->', newOrder.orderNumber)
+                            processOrder.updateNotShippedOrders(newOrder)
+                            console.log('new order created in DB-------->', newOrder.orderNumber)
                         }
                     })
                 })

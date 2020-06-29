@@ -13,7 +13,7 @@ const NotShippedOrderSchema = new Schema({
         type: Number,
     },
     orderNumber: {
-        type: Number,
+        type: String,
     },
     isSplited: {
         type: Boolean,

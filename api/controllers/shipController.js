@@ -42,7 +42,7 @@ module.exports = {
                         if (err)
                             next(err)
                         else {
-                            console.log('---------------->')
+                            // console.log('---------------->')
                             ////////processShippment.updateProducts(shipment) //update qty
                             console.log('new shipment created-------->', newShipment.shipmentId)
 
@@ -70,19 +70,19 @@ module.exports = {
                             next(err)
                         else if (orderResult.length > 0) {
                             /* if orderID  exists */
-                            console.log(`=====..${orderResult.length}..==== orderResult found`)
+                            console.log(`=====..${orderResult.length}..==== orderResult found in DB`)
 
                             processShippment.updateProducts(shipment) // update qty (physical qty)
 
                         } else {
                             /* If orderID  doesn't exist */
-                            console.log('=====..xxxxxxxxxx..==== orderResult  not  found')
+                            console.log('=====..xxxxxxxxxx..==== orderResult not found in DB')
 
                             axios.get(`http://ssapi.shipstation.com/orders/${shipment.orderId}`, authorization)
                                 .then(async (orderResponse) => {
-                                    console.log('=====..xxxxxlllxxxxx..==== order downloaded')
+                                    console.log(`=====..xxxxxlllxxxxx..==== order ${shipment.orderId} lodaded from shipstation`)
 
-                                    if (shipment.advancedOptions.mergedOrSplit) {
+                                    if (orderResponse.data.advancedOptions.mergedOrSplit) {
                                         /*  If it is a splited order: */
                                         orderModel.create({ ...orderResponse.data, isActivated: true }, async (err, newOrder) => {
 
@@ -90,26 +90,26 @@ module.exports = {
                                             console.log('<<<<=====..xxxxxlllxxxxx..====>>>>>>  order Processed')
                                             //await processShippment.updateProducts(shipment) // update qty (physical qty)
 
-                                            axios.get(`http://ssapi.shipstation.com/orders/${shipment.advancedOptions.parentId}`, authorization)
+                                            axios.get(`http://ssapi.shipstation.com/orders/${orderResponse.data.advancedOptions.parentId}`, authorization)
                                                 .then((parentOrder) => {
                                                     orderModel.findOneAndUpdate({ orderId: parentOrder.orderId }, { parentOrder, isActivated: false }, { upsert: true, new: true }, (err, newParentOrder) => {
                                                         if (err)
                                                             next(err)
+                                                        else {
+                                                            console.log('<<==.xxxlxxx.==>>  parent order Created')
+
+                                                        }
                                                     })
                                                 })
                                         })
                                     } else {
                                         /*  If it is NOT a splited order: */
                                         console.log('<<<<=====..xxxxxlxxxxx..====>>>>>>  order is NOT a splited order:')
-
                                         orderModel.create({ ...orderResponse.data, isActivated: true }, async (err, newOrder) => {
-
-                                            await processOrder.updateProducts(orderResponse.data)
-                                            console.log('<<<<=====..xxxxxlllxxxxx..====>>>>>>  order Processed')
-                                            await processShippment.updateProducts(shipment)
-
-
-
+                                            console.log(`=====..xxxxxlllxxxxx..==== order ${newOrder.orderId} added`)
+                                            // await processOrder.updateProducts(orderResponse.data)
+                                            // console.log('<<<<=====..xxxxxlllxxxxx..====>>>>>>  order Processed')
+                                            // await processShippment.updateProducts(shipment)
                                         })
                                     }
                                 })
